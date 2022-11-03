@@ -1,0 +1,18 @@
+
+<div class="container">
+    <mat-card>
+    <form class="example-form" [formGroup]="postCreateForm">
+        <mat-form-field class="example-full-width" appearance="fill">
+          <mat-label>TITLE</mat-label>
+          <input matInput placeholder="Post Title..." formControlName="title">
+        </mat-form-field>
+      
+        <mat-form-field class="example-full-width" appearance="fill">
+          <mat-label>CONTENT</mat-label>
+          <textarea matInput placeholder="Post Content..." formControlName="content"></textarea>
+        </mat-form-field>
+      </form>
+      <button mat-raised-button color="primary" (click)="addPost()">Submit</button> |
+      <button mat-raised-button color="warn" (click)="postFormIntialize()">Reset</button>
+    </mat-card>
+</div>
