@@ -1,5 +1,4 @@
- import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
 import { Post } from '../models/posts';
 import { PostsService } from '../services/post-service/posts.service';
 
@@ -8,24 +7,22 @@ import { PostsService } from '../services/post-service/posts.service';
   templateUrl: './post-list.component.html',
   styleUrls: ['./post-list.component.css']
 })
-export class PostListComponent implements OnInit, AfterViewInit {
- 
+export class PostListComponent implements OnInit {
   panelOpenState = false;
   posts:Post[]=[];
   constructor(private postService: PostsService) { }
 
   ngOnInit(): void {
     this.postService.getPosts().subscribe(res => {
-      this.posts = res.posts;
+      if (res.posts) {
+        this.posts = res.posts;
+      }
     });
-    this.postService.postCreateData.subscribe(res=>{
-      this.posts.push(res.posts);
-      console.log(this.posts);
-    })
-    
-  }
-  ngAfterViewInit(): void {
-   
+    if(this.posts) {
+      this.postService.postCreateData.subscribe((postData)=>{
+        this.posts.push(postData);
+      });
+    }
   }
 
 }

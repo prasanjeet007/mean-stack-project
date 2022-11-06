@@ -8,7 +8,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class PostsService {
-  postCreateData = new Subject<{message:string, posts:Post}>();
+  postCreateData = new Subject<Post>();
   constructor(private http: HttpClient) { }
   addPosts(postData: Post) {
     return this.http.post<{message:string,posts:Post}>(`${environment.URL}/api/posts`, postData);

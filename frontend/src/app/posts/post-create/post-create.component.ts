@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { map } from 'rxjs';
+import { Post } from 'src/app/models/posts';
 import { PostsService } from 'src/app/services/post-service/posts.service';
 
 @Component({
@@ -18,14 +20,13 @@ export class PostCreateComponent implements OnInit {
   }
   postFormIntialize() {
     this.postCreateForm = new FormGroup({
-      id: new FormControl(+(Math.random() * 10000).toPrecision(4)),
       title:new FormControl('', [Validators.required, Validators.minLength(10), Validators.maxLength(20)]),
-      content:new FormControl('', [Validators.required, Validators.minLength(30), Validators.maxLength(50)])
+      content:new FormControl('', [Validators.required, Validators.minLength(30), Validators.maxLength(150)])
     });
   }
   addPost() {
     if(this.postCreateForm.valid) {
-    this.postService.addPosts(this.postCreateForm.value).subscribe((res)=> {
+    this.postService.addPosts(this.postCreateForm.value).pipe(map((result)=>result.posts)).subscribe((res)=> {
       this.postService.postCreateData.next(res);
     })
     this.postFormIntialize();

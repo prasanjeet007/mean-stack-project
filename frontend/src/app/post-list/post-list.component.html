@@ -1,4 +1,5 @@
-<mat-accordion class="center_div" *ngIf="posts.length>0">
+<div class="container">
+  <mat-accordion class="center_div" *ngIf="posts.length>0;else errorMessage">
     <mat-expansion-panel (opened)="panelOpenState = true"
     (closed)="panelOpenState = false" *ngFor="let post of posts">
       <mat-expansion-panel-header>
@@ -9,3 +10,7 @@
       <p>{{post.content}}</p>
     </mat-expansion-panel>
   </mat-accordion>
+  <ng-template #errorMessage>
+    <app-error-page></app-error-page>
+  </ng-template>
+</div>
