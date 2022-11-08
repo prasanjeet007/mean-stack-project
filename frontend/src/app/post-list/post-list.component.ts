@@ -15,20 +15,16 @@ export class PostListComponent implements OnInit {
 
   ngOnInit(): void {
     this.postService.getPosts().pipe(map(data=>data.posts)).subscribe(res => {
-      alert('intial');
       this.posts = res;
     });
       this.postService.postCreateData.subscribe((postData)=>{
-        alert('hello');
           this.posts.push(postData);
       });
       this.postService.updatedPostData.pipe(map((data)=>data.posts)).subscribe((post:Post)=>{
-        console.log('update',post);
-        console.log('postArray',this.posts);
-        //  const index = this.posts.findIndex((post)=>post._id===post._id);
-        //  console.log(index);
-        //  this.posts.splice(index,0,post);
-        //  console.log(this.posts);
+         const index = this.posts.findIndex((postData)=>postData._id===post._id);
+         this.posts.splice(index,1);
+         this.posts.splice(index,0,post);
+         console.log(this.posts);
       })
   }
  
