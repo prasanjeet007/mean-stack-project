@@ -10,6 +10,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatCardModule} from '@angular/material/card';
 import {MatInputModule} from '@angular/material/input';
+import {MatDividerModule} from '@angular/material/divider';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { PostListComponent } from './post-list/post-list.component';
@@ -37,6 +38,7 @@ import { ErrorPageComponent } from './error-page/error-page.component';
     MatFormFieldModule,
     MatCardModule,
     MatInputModule,
+    MatDividerModule,
     BrowserAnimationsModule,
     HttpClientModule
   ],

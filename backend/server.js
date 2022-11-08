@@ -22,11 +22,12 @@ app.post('/api/posts', (req,res) => {
         title: req.body.title,
         content:req.body.content
     });
- post.save();
-   res.status(201).json({
-    message: "Post created Successfully",
-    posts: req.body
-   })
+ post.save().then((data)=>{
+    res.status(201).json({
+        message: "Post created Successfully",
+        posts: data
+       })
+ })
 })
 app.get('/api/posts', (req,res) => {
    Post.find().then((posts)=> {
@@ -35,10 +36,44 @@ app.get('/api/posts', (req,res) => {
         posts: posts
     });
     }).catch((err) => {
-        res.status(200).json({
+        res.status(400).json({
            err: err
         }); 
     })
+});
+
+app.delete('/api/posts/:id',(req,res)=>{
+    Post.findByIdAndDelete({_id:req.params.id}).then((data)=>{
+        res.status(200).json({
+            message:'Post Delete Successfully',
+            posts:data
+        });
+    }).catch((err)=>{
+        res.status(400).json({
+            err:err
+        })
+    })
+});
+
+app.get('/api/posts/:id',(req,res)=>{
+    Post.findById({_id:req.params.id}).then((post)=>{
+        res.status(200).json({
+            message:'Post find successfully',
+            posts:post
+        });
+    })
+});
+
+app.put('/api/posts/:id',(req,res)=>{
+    Post.findByIdAndUpdate({_id:req.params.id},{$set:{
+        title:req.body.title,
+        content:req.body.content
+    }},{new:true},(err,post)=>{
+        res.status(200).json({
+            message:'Post update successfully',
+            posts:post
+        });
+    });
 });
 
 app.listen(process.env.PORT || PORT, () => {

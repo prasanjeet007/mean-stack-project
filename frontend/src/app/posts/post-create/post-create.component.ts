@@ -17,9 +17,17 @@ export class PostCreateComponent implements OnInit {
    }
 
   ngOnInit(): void {
+    this.postService.setFormData.subscribe((post)=>{
+      this.postCreateForm.setValue({
+        id:post._id,
+        title:post.title,
+        content:post.content
+      })
+    });
   }
   postFormIntialize() {
     this.postCreateForm = new FormGroup({
+      id:new FormControl(''),
       title:new FormControl('', [Validators.required, Validators.minLength(10), Validators.maxLength(20)]),
       content:new FormControl('', [Validators.required, Validators.minLength(30), Validators.maxLength(150)])
     });
@@ -33,5 +41,13 @@ export class PostCreateComponent implements OnInit {
   } else {
     alert('Please fill the form first');
   }
+}
+updatePost(formData:FormGroup) {
+  console.log('formData',formData);
+ this.postService.updatePostById(formData).subscribe((res)=>{
+  console.log('updatedresult',res);
+  this.postService.updatedPostData.next(res);
+  this.postFormIntialize();
+ });
 }
 }
