@@ -22,11 +22,11 @@ describe('AppComponent', () => {
     app = fixture.componentInstance;
   });
 
-  fit('should create the app', () => {
+  it('should create the app', () => {
     expect(app).toBeTruthy();
   });
 
-  fit(`should have as title 'frontend'`, () => {
+  it(`should have as title 'frontend'`, () => {
     expect(app.title).toEqual('frontend');
   });
 });
