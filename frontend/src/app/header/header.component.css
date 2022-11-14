@@ -1,0 +1,16 @@
+ul{
+    list-style-type: none;
+    margin: 17px 0px;
+}
+
+li a{
+    text-decoration: none;
+    color: white;
+    cursor: pointer;
+}
+.spacer {
+    flex: 1 1 auto;
+}
+#main-header-title{
+    cursor: pointer;
+}
