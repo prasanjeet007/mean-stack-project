@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { map } from 'rxjs';
-import { Post } from 'src/app/models/posts';
 import { PostsService } from 'src/app/services/post-service/posts.service';
 
 @Component({
@@ -12,18 +12,23 @@ import { PostsService } from 'src/app/services/post-service/posts.service';
 export class PostCreateComponent implements OnInit {
   newPost = "My new Post";
   postCreateForm: FormGroup;
-  constructor(private postService: PostsService) {
+  submitButton:boolean = true;
+  constructor(private postService: PostsService, private router:Router, private route:ActivatedRoute) {
    this.postFormIntialize();
    }
 
   ngOnInit(): void {
-    this.postService.setFormData.subscribe((post)=>{
-      this.postCreateForm.setValue({
-        id:post._id,
-        title:post.title,
-        content:post.content
-      })
-    });
+    const id = this.route.snapshot.params['id'];
+    if(id) {
+      this.postService.getPostById(id).pipe(map(data=>data.posts)).subscribe((post)=>{
+        this.postCreateForm.setValue({
+          id:post._id,
+          title:post.title,
+          content:post.content
+        });
+        this.submitButton = false;
+      });
+    }
   }
   postFormIntialize() {
     this.postCreateForm = new FormGroup({
@@ -36,18 +41,16 @@ export class PostCreateComponent implements OnInit {
     if(this.postCreateForm.valid) {
     this.postService.addPosts(this.postCreateForm.value).pipe(map((result)=>result.posts)).subscribe((res)=> {
       this.postService.postCreateData.next(res);
-    })
-    this.postFormIntialize();
+      this.router.navigate(['/post-list']);
+    });
   } else {
     alert('Please fill the form first');
   }
 }
 updatePost(formData:FormGroup) {
-  console.log('formData',formData);
  this.postService.updatePostById(formData).subscribe((res)=>{
-  console.log('updatedresult',res);
   this.postService.updatedPostData.next(res);
-  this.postFormIntialize();
+   this.router.navigate(['/post-list']);
  });
 }
 }

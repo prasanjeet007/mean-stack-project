@@ -6,6 +6,7 @@ import { PostCreateComponent } from './posts/post-create/post-create.component';
 const routes: Routes = [
   {path:'', redirectTo:'/post-list', pathMatch:'full'},
   {path:'post-create', component: PostCreateComponent},
+  {path:'post-create/:id', component: PostCreateComponent},
   {path:'post-list', component: PostListComponent}
 ];
 

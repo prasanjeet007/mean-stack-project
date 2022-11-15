@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { Post } from 'src/app/models/posts';
 import { environment } from 'src/environments/environment';
 
@@ -8,9 +8,9 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class PostsService {
-  postCreateData = new Subject<Post>();
+  postCreateData = new BehaviorSubject<Post>({_id:'',title:'',content:''});
   setFormData = new Subject<Post>();
-  updatedPostData = new Subject<any>();
+  updatedPostData = new BehaviorSubject<any>(null);
   constructor(private http: HttpClient) { }
   addPosts(postData: Post) {
     return this.http.post<{message:string,posts:Post}>(`${environment.URL}/api/posts`, postData);
@@ -25,7 +25,6 @@ export class PostsService {
     return this.http.get<any>(environment.URL+'/api/posts/'+id);
   }
   updatePostById(body:any){
-    console.log('updateBodydata',body);
     return this.http.put<any>(environment.URL+`/api/posts/${body.id}`,body);
   }
 }

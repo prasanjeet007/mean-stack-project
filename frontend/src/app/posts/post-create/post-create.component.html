@@ -14,7 +14,7 @@
       </form>
       <button mat-raised-button color="primary" (click)="addPost()" *ngIf="!postCreateForm.value.id;else editButton">Submit</button> |
       <ng-template #editButton>
-        <button mat-raised-button color="primary" (click)="updatePost(postCreateForm.value)">Edit</button>
+        <button mat-raised-button color="primary" (click)="updatePost(postCreateForm.value)">{{submitButton?'Submit':'Update'}}</button>
       </ng-template>
       <button mat-raised-button color="warn" (click)="postFormIntialize()">Reset</button>
     </mat-card>

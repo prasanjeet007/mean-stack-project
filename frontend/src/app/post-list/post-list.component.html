@@ -1,19 +1,20 @@
 <div class="container">
+  <mat-spinner *ngIf="loading"></mat-spinner>
   <mat-accordion class="center_div" *ngIf="posts.length>0;else errorMessage">
-    <mat-expansion-panel (opened)="panelOpenState = true"
-    (closed)="panelOpenState = false" *ngFor="let post of posts;">
+    <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false" *ngFor="let post of posts;">
       <mat-expansion-panel-header>
         <mat-panel-title>
           {{post.title}}
         </mat-panel-title>
       </mat-expansion-panel-header>
       <p>{{post.content}}</p>
-      <mat-divider></mat-divider>
+
       <div style="width: 100%;">
-        <button mat-raised-button color="warn" style="float: right;" (click)="deletePost(post._id)">Delete</button>&nbsp;
+        <button mat-raised-button color="warn" style="float: right;margin: 0px 5px;"
+          (click)="deletePost(post._id)">Delete</button>
         <button mat-raised-button color="primary" style="float: right;" (click)="getPostById(post._id)">Edit</button>
       </div>
-        <mat-divider style="clear: both;"></mat-divider>
+      <div style="clear: both;"></div>
     </mat-expansion-panel>
   </mat-accordion>
   <ng-template #errorMessage>
