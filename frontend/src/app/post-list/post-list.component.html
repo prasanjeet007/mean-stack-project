@@ -1,6 +1,7 @@
 <div class="container">
   <mat-spinner *ngIf="loading"></mat-spinner>
   <mat-accordion class="center_div" *ngIf="posts.length>0;else errorMessage">
+    <h1 class="list_heading">List Of Posts</h1>
     <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false" *ngFor="let post of posts;">
       <mat-expansion-panel-header>
         <mat-panel-title>
