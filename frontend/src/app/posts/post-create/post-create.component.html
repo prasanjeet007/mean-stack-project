@@ -1,16 +1,25 @@
 
 <div class="container">
+  <p class="display-5 text-decoration-underline">Adding Post</p>
     <mat-card>
     <form class="example-form" [formGroup]="postCreateForm">
         <mat-form-field class="example-full-width" appearance="fill">
           <mat-label>TITLE</mat-label>
           <input matInput placeholder="Post Title..." formControlName="title">
+          <mat-error *ngIf="postCreateForm.get('title').invalid && postCreateForm.get('title').touched">Title is required. Min. 10 and Max. 20 characters are allowed.</mat-error>
+          <mat-hint align="end">{{postCreateForm.get('title').value.length}}/20</mat-hint>
         </mat-form-field>
       
         <mat-form-field class="example-full-width" appearance="fill">
           <mat-label>CONTENT</mat-label>
           <textarea matInput placeholder="Post Content..." formControlName="content"></textarea>
+          <mat-error *ngIf="postCreateForm.get('content').invalid && postCreateForm.get('content').touched">Content is required. Min. 30 and Max. 150 characters are allowed.</mat-error>
+          <mat-hint align="end">{{postCreateForm.get('content').value.length}}/150</mat-hint>
         </mat-form-field>
+        <div class="img-button">
+          <button mat-stroked-button color="primary" type="button" (click)="filePicker.click()">Select Image</button>
+          <input type="file" #filePicker>
+        </div>
       </form>
       <button mat-raised-button color="primary" (click)="addPost()" *ngIf="!postCreateForm.value.id;else editButton">Submit</button> |
       <ng-template #editButton>

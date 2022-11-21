@@ -5,6 +5,12 @@
 }
 
 .example-full-width {
-    width: 100%;
+    width: 180%
+}
+.img-button{
+    margin: 10px auto;
+}
+input[type="file"] {
+    visibility: hidden;
 }
 
