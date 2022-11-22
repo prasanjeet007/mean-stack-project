@@ -12,6 +12,7 @@ import { PostsService } from 'src/app/services/post-service/posts.service';
 export class PostCreateComponent implements OnInit {
   newPost = "My new Post";
   postCreateForm: FormGroup;
+  imagePreview: string;
   submitButton:boolean = true;
   constructor(private postService: PostsService, private router:Router, private route:ActivatedRoute) {
    this.postFormIntialize();
@@ -34,8 +35,10 @@ export class PostCreateComponent implements OnInit {
     this.postCreateForm = new FormGroup({
       id:new FormControl(''),
       title:new FormControl('', [Validators.required, Validators.minLength(10), Validators.maxLength(20)]),
-      content:new FormControl('', [Validators.required, Validators.minLength(30), Validators.maxLength(150)])
+      content:new FormControl('', [Validators.required, Validators.minLength(30), Validators.maxLength(150)]),
+      image: new FormControl('',[Validators.required])
     });
+    this.imagePreview = null;
   }
   addPost() {
     if(this.postCreateForm.valid) {
@@ -52,5 +55,31 @@ updatePost(formData:FormGroup) {
   this.postService.updatedPostData.next(res);
    this.router.navigate(['/post-list']);
  });
+}
+
+onImagePicked(event) {
+  const file = event.target.files[0];
+  const imageType = file.type.split("/")[1];
+  this.postCreateForm.patchValue({
+    image:file
+  });
+  this.postCreateForm.get('image').updateValueAndValidity();
+  if(file && (imageType === 'png'||imageType==='jpg'||imageType==='jpeg')) {
+    const reader = new FileReader();
+    reader.onload = () => {
+    this.imagePreview = reader.result as string;
+    };
+    reader.readAsDataURL(file);
+  } else {
+  confirm("Enter a valid image");
+    return;
+  }
+}
+
+deleteImagePreview() {
+  this.imagePreview = null;
+  this.postCreateForm.patchValue({
+    image:''
+  });
 }
 }

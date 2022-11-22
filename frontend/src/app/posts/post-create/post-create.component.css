@@ -13,4 +13,9 @@
 input[type="file"] {
     visibility: hidden;
 }
+.delete{
+    background-color: rgb(1, 1, 10);
+    position: absolute;
+    color: white;
+}
 
