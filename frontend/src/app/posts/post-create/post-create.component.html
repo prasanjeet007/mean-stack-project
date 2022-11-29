@@ -2,6 +2,7 @@
 <div class="container">
   <p class="display-5 text-decoration-underline">Adding Post</p>
     <mat-card>
+      <mat-card-content>
     <form class="example-form" [formGroup]="postCreateForm">
         <mat-form-field class="example-full-width" appearance="fill">
           <mat-label>TITLE</mat-label>
@@ -30,5 +31,6 @@
         <button mat-raised-button color="primary" (click)="updatePost(postCreateForm.value)">{{submitButton?'Submit':'Update'}}</button>
       </ng-template>
       <button mat-raised-button color="warn" (click)="postFormIntialize()">Reset</button>
+    </mat-card-content>
     </mat-card>
 </div>
