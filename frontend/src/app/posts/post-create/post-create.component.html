@@ -22,13 +22,13 @@
           <input type="file" #filePicker (change)="onImagePicked($event)">
         </div>
         <ng-container class="image-preview" *ngIf="imagePreview">
-          <img [src]="imagePreview" [alt]="postCreateForm.get('title').value">
+          <img [src]="imagePreview" [alt]="postCreateForm.get('title').value" height="200" width="200" class="imagePreview">
           <span class="delete" style="cursor: pointer;" (click)="deleteImagePreview()">X</span>
         </ng-container>
       </form>
-      <button mat-raised-button color="primary" (click)="addPost()" *ngIf="!postCreateForm.value.id;else editButton">Submit</button> |
+      <button mat-raised-button color="primary" (click)="addPost(image)" *ngIf="!postCreateForm.value.id;else editButton">Submit</button> |
       <ng-template #editButton>
-        <button mat-raised-button color="primary" (click)="updatePost(postCreateForm.value)">{{submitButton?'Submit':'Update'}}</button>
+        <button mat-raised-button color="primary" (click)="updatePost(postCreateForm.value, image)">{{submitButton?'Submit':'Update'}}</button>
       </ng-template>
       <button mat-raised-button color="warn" (click)="postFormIntialize()">Reset</button>
     </mat-card-content>

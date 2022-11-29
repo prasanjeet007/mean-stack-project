@@ -13,6 +13,7 @@ export class PostCreateComponent implements OnInit {
   newPost = "My new Post";
   postCreateForm: FormGroup;
   imagePreview: string;
+  image:File;
   submitButton: boolean = true;
   constructor(private postService: PostsService, private router: Router, private route: ActivatedRoute) {
     this.postFormIntialize();
@@ -25,8 +26,10 @@ export class PostCreateComponent implements OnInit {
         this.postCreateForm.setValue({
           id: post._id,
           title: post.title,
-          content: post.content
+          content: post.content,
+          image:post.image
         });
+        this.imagePreview = post.image;
         this.submitButton = false;
       });
     }
@@ -36,13 +39,17 @@ export class PostCreateComponent implements OnInit {
       id: new FormControl(''),
       title: new FormControl('', [Validators.required, Validators.minLength(10), Validators.maxLength(20)]),
       content: new FormControl('', [Validators.required, Validators.minLength(30), Validators.maxLength(150)]),
-      image: new FormControl('', [Validators.required])
+      image:new FormControl(null,Validators.required)
     });
     this.imagePreview = null;
   }
-  addPost() {
+  addPost(image:File) {
     if (this.postCreateForm.valid) {
-      this.postService.addPosts(this.postCreateForm.value).pipe(map((result) => result.posts)).subscribe((res) => {
+      const postFormData = new FormData();
+      postFormData.append('title',this.postCreateForm.value.title);
+      postFormData.append('content',this.postCreateForm.value.content);
+      postFormData.append('image',image);
+      this.postService.addPosts(postFormData).pipe(map((result) => result.posts)).subscribe((res) => {
         this.postService.postCreateData.next(res);
         this.router.navigate(['/post-list']);
       });
@@ -50,18 +57,32 @@ export class PostCreateComponent implements OnInit {
       alert('Please fill the form first');
     }
   }
-  updatePost(formData: FormGroup) {
-    this.postService.updatePostById(formData).subscribe((res) => {
-      this.postService.updatedPostData.next(res);
-      this.router.navigate(['/post-list']);
-    });
+  updatePost(formData: any, image:File) {
+    let postFormData;
+    if(typeof(this.postCreateForm.value.image)==='object') {
+      postFormData = new FormData();
+      postFormData.append('id',formData.id);
+      postFormData.append('title',formData.title);
+      postFormData.append('content',formData.content);
+      postFormData.append('image',image);
+      this.postService.updatePostById(postFormData).subscribe((res) => {
+        this.postService.updatedPostData.next(res);
+        this.router.navigate(['/post-list']);
+      });
+    } else {
+      this.postService.updatePostById(formData).subscribe((res) => {
+        this.postService.updatedPostData.next(res);
+        this.router.navigate(['/post-list']);
+      });
+    }
   }
 
   onImagePicked(event) {
     const file = event.target.files[0];
+    this.image = event.target.files[0];
     const imageType = file.type.split("/")[1];
     this.postCreateForm.patchValue({
-      image: file
+      image: this.image
     });
     this.postCreateForm.get('image').updateValueAndValidity();
     if (file && (imageType === 'png' || imageType === 'jpg' || imageType === 'jpeg')) {
@@ -78,8 +99,9 @@ export class PostCreateComponent implements OnInit {
 
   deleteImagePreview() {
     this.imagePreview = null;
+    this.image = null;
     this.postCreateForm.patchValue({
-      image: ''
+      image: null
     });
   }
 }

@@ -24,7 +24,7 @@ export class PostListComponent implements OnInit {
           this.posts.push(postData);
           this.loading = false;
       });
-      this.postService.updatedPostData.pipe(map((data)=>data?data.posts:'')).subscribe((post:Post)=>{
+      this.postService.updatedPostData.pipe(map((data)=>data?data.posts:'')).subscribe((post:any)=>{
          const index = this.posts.findIndex((postData)=>postData._id===post._id);
          this.posts.splice(index,1);
          this.posts.splice(index,0,post);

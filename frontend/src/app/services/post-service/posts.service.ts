@@ -12,7 +12,7 @@ export class PostsService {
   setFormData = new Subject<Post>();
   updatedPostData = new BehaviorSubject<any>(null);
   constructor(private http: HttpClient) { }
-  addPosts(postData: Post) {
+  addPosts(postData: FormData) {
     return this.http.post<{message:string,posts:Post}>(`${environment.URL}/api/posts`, postData);
   }
   getPosts() {
