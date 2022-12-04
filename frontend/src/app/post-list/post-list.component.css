@@ -8,3 +8,7 @@
     font-size:30px;
     font-weight: 700;
   }
+  mat-paginator {
+   display: flex;
+   justify-content: center;
+  }
