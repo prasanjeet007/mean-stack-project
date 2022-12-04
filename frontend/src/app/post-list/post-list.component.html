@@ -17,6 +17,11 @@
       </div>
       <div style="clear: both;"></div>
     </mat-expansion-panel>
+    <mat-paginator #paginator [length]="length"
+    (page)="handlePageEvent($event)"
+              [pageSize]="pageSize"
+              [hidePageSize]=true>
+</mat-paginator>
   </mat-accordion>
   <ng-template #errorMessage>
     <app-error-page></app-error-page>

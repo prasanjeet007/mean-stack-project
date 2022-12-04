@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { map } from 'rxjs';
 import { Post } from '../models/posts';
@@ -12,11 +13,19 @@ import { PostsService } from '../services/post-service/posts.service';
 export class PostListComponent implements OnInit {
   panelOpenState = false;
   posts:Post[]=[];
+  pageSize: number=3;
+  length:number;
+  currentPage: number = 1;
   loading:boolean = true;
   constructor(private postService: PostsService, private router: Router) { }
 
   ngOnInit(): void {
-    this.postService.getPosts().pipe(map(data=>data.posts)).subscribe(res => {
+    this.loading = true;
+    this.postService.getPosts(`?pageSize=''&page=''`).pipe(map(data=>data.posts)).subscribe(res => {
+      this.length = res.length;
+      this.loading = false
+    });
+    this.postService.getPosts(`?pageSize=${this.pageSize}&page=${this.currentPage}`).pipe(map(data=>data.posts)).subscribe(res => {
       this.posts = res;
       this.loading = false;
     });
@@ -29,7 +38,7 @@ export class PostListComponent implements OnInit {
          this.posts.splice(index,1);
          this.posts.splice(index,0,post);
          this.loading = false;
-      })
+      });
   }
  
   deletePost(id:string) {
@@ -42,5 +51,13 @@ export class PostListComponent implements OnInit {
   getPostById(id:string){
     this.loading = true;
     this.router.navigate(['/post-create',id]);
+  }
+
+  handlePageEvent(event:PageEvent) {
+    this.currentPage = event.pageIndex + 1;
+    this.pageSize = event.pageSize;
+    this.postService.getPosts(`?pageSize=${this.pageSize}&page=${this.currentPage}`).pipe(map(data=>data.posts)).subscribe(res => {
+      this.posts = res;
+    });
   }
 }

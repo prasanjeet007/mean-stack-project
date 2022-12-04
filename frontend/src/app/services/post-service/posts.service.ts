@@ -15,8 +15,8 @@ export class PostsService {
   addPosts(postData: FormData) {
     return this.http.post<{message:string,posts:Post}>(`${environment.URL}/api/posts`, postData);
   }
-  getPosts() {
-    return this.http.get<{message: string, posts:Post[]}>(environment.URL+'/api/posts');
+  getPosts(queryParams) {
+    return this.http.get<{message: string, posts:Post[]}>(environment.URL+'/api/posts'+queryParams);
   }
   deletePostById(id:string) {
     return this.http.delete<any>(environment.URL+'/api/posts/'+id);
